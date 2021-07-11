@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        .main{
+            
+           
+            border-radius: 5px;
+            background-color:skyblue;
+        }
+        .proimg{
+           
+            border-right:black 2px solid;
+            width: 200px;
+            margin: 30px;
+            padding-top: 20px;
+            float: left;
+            
+            
+        }
+        
+        .info{
+            
+            width: 200px;
+            border-right:black 2px solid;
+            margin: 30px;
+           
+
+            
+            
+
+        }
+        .twiter{
+            
+            width: 50%;
+            height: 50%;
+            float: left;
+            margin-top: 20px;
+            position: relative;
+            background:orange;
+           
+            
+        }
+       
+        
+        .githubrepo{
+            
+            width: 200px;
+            border-right: black 2px solid;
+            background-color: antiquewhite;
+            padding-left: 20px;
+            
+            
+        
+        }
+       img{
+        border-radius: 100%;
+       }
+       ul{
+           padding-left:10px;
+           margin:0px;
+
+       }
+       
+    </style>
+</head>
+<body>
+    <div id="loading"> loading...</div>
+
+    <div class=main id="maincontainer" hidden>
+        <div class="proimg">
+            <img 
+            id="profileimg"
+            height="200"
+            width="150"
+            
+            >
+        
+        </div>
+        <div class="twiter">
+            <a class="twitter-timeline" href="https://twitter.com/dongol_bijay?ref_src=twsrc%5Etfw">Tweets by dongol_bijay</a> 
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        <div class="info">
+            <h2 id="fullname"></h2>
+            <h3 id="email"></h3>
+            <p id="bio"></p>
+            <h4 id=githubfollower></h4>
+            <p>
+                <i>Check me on </i><a id="githublink">GitHub</a>
+            </p>
+        </div>
+        
+        <div  class="githubrepo">
+            
+            <h3 id="reposno"></h3>
+
+            <ul id="reponame"></ul>
+    
+           
+
+
+
+        </div>
+       
+      
+    </div>
+    <div>
+        <script>
+            fetch("https://api.github.com/users/bijaydongol")
+            .then(response=>response.json())
+            .then(function(data){
+                console.log(data)
+
+                
+                let followercount = data["followers"]
+                let followerinfo=`I have been followed by ${followercount} alieans`
+
+                let repocount=data["public_repos"]
+                let rep=`My Projects (${repocount})`
+
+                document.getElementById("profileimg").src=data["avatar_url"]
+                document.getElementById("fullname").textContent=data["name"]
+                document.getElementById("email").textContent=data["email"]
+                document.getElementById("bio").textContent=data["bio"]
+                document.getElementById("githubfollower").textContent=followerinfo
+                document.getElementById("githublink").href=data["html_url"]
+                document.getElementById("maincontainer").hidden=false
+                document.getElementById("loading").hidden=true
+                document.getElementById("reposno").textContent=rep
+
+
+            
+
+            })
+            fetch("https://api.github.com/users/bijaydongol/repos")
+                .then(response=>response.json())
+                .then(function(data){
+                    console.log(data)
+                    
+                   let ul = document.createElement('ul')
+                   document.getElementById('reponame').appendChild(ul)
+
+                    for(let i in data){
+                      
+                      let li=document.createElement('li')
+                      ul.appendChild(li)
+                      li.innerHTML+=data[i].name
+                    
+                        
+                        
+
+                    }
+                    
+
+
+
+                })
+        </script>
+    </div>
+</body>
+</html>
